@@ -94,8 +94,6 @@ function cnp_postdata_header($post, $options=array()) {
 	$meta_bar = '<footer class="meta">'. $author . $date .'</footer>';
 
 	}
-	$date = '';
-	if ( !is_singular() ) { $date = fdoc_date('n/j', $id); }
 
 
 	/*//////////////////////////////////////////////////////
