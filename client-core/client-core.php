@@ -2,7 +2,7 @@
 /*
     Plugin Name: Client Core
     Plugin URI: http://clarknikdelpowell.com
-    Version: 0.1.0
+    Version: 1.3.0
     Description: Core functionality for a client site
     Author: Glenn Welser, Sam Mello & Josh Nederveld
     Author URI: http://clarknikdelpowell.com/agency/people/
@@ -61,6 +61,8 @@ define('SITE_PRE', 'site_');
 //////////////////////////////////////////////////////////////////////////////
 
 // Post Types
+//require_once(SITE_PATH.'register/add_options_page.php');
+//require_once(SITE_PATH.'register/deactivate_post_type.php');
 //require_once(SITE_PATH.'register/news_post_type.php');
 
 ////////////////////////////////////////////////////////////////////////////////
