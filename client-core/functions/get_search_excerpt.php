@@ -32,7 +32,7 @@ $shortened = substr($content, $position, $length);
 preg_match_all("/$key+/i", $shortened, $matches);
 if (is_array($matches[0]) && count($matches[0]) >= 1) {
 	foreach ($matches[0] as $match) {
-		$shortened = str_replace($match, '<b class="red">'.$match.'</b>', $shortened);
+		$shortened = str_replace($match, '<strong class="highlighted">'.$match.'</strong>', $shortened);
 	}
 }
 $excerpt = $before.$shortened.$after;
