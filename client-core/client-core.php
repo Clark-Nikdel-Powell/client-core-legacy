@@ -32,7 +32,7 @@
 
 define('SITE_LOCAL', ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1'));
 define('SITE_PATH', plugin_dir_path(__FILE__));
-define('SITE_URL', FDOC_LOCAL ? plugins_url().'/Client-Core/' : plugin_dir_url(__FILE__));
+define('SITE_URL', SITE_LOCAL ? plugins_url().'/Client-Core/' : plugin_dir_url(__FILE__));
 define('SITE_PRE', 'site_');
 
 ////////////////////////////////////////////////////////////////////////////////
