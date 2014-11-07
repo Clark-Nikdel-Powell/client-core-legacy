@@ -72,6 +72,11 @@ $settings = array(
 		'name' => 'dashicon'
 		*/
 	)
+,	'add_taxonomies' => array(
+		/*
+		'name' => array('posts','pages')
+		*/
+	)
 ,	'remove_post_types' => array(
 		/*
 		'edit.php'

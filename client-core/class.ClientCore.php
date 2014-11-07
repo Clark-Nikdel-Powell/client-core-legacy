@@ -25,6 +25,7 @@ class ClientCore {
 	,	'custom_image_sizes' 	=> array()
 	,	'options_page' 			=> FALSE
 	,	'add_post_types' 		=> array()
+	,	'add_taxonomies' 		=> array()
 	,	'remove_post_types' 	=> array()
 	,	'add_css' 				=> array()
 	,	'add_js' 				=> array()
@@ -69,6 +70,7 @@ class ClientCore {
 	public function hook_wordpress() {
 		add_action( 'admin_menu', array( $this, 'remove_post_types' ) );
 		add_action( 'init' , array( $this, 'add_post_types' ) );
+		add_action( 'init', array( $this, 'add_taxonomies' ) );
 		add_action( 'admin_init', array( $this, 'css' ) );
 		add_action( 'admin_init', array( $this, 'js' ) );
 	}
@@ -127,11 +129,11 @@ class ClientCore {
 	*
 	* @param 	string 		$name 			The name of the post type (singular)
 	* @param 	string 		$icon 			Optional class name of the dashicon to use
-	* @param 	array 		$extargs 		Optional array of args to use when registering post type
-	* @param 	array 		$extlables 		Optional array of labels to use when registering post type
+	* @param 	array 		$extargs 		Optional array of args to use when registering
+	* @param 	array 		$extlables 		Optional array of labels to use when registering
 	* @since 	1.0
 	*/
-	public function register( $name, $icon = '', $extargs = array(), $extlabels = array(), $extsupports = array() ) {
+	public function register_post_type( $name, $icon = '', $extargs = array(), $extlabels = array(), $extsupports = array() ) {
 		if ( $icon === '' ) {
 			$icon = 'dashicons-admin-post';
 		}
@@ -172,21 +174,73 @@ class ClientCore {
 
 		$args = array(
 			 'labels' 				=> $labels
-			,'public' 				=> true
-			,'publicly_queryable' 	=> true
-			,'has_archive' 			=> false
-			,'show_in_nav_menus' 	=> true
+			,'public' 				=> TRUE
+			,'publicly_queryable' 	=> TRUE
+			,'has_archive' 			=> TRUE
+			,'show_in_nav_menus' 	=> TRUE
 			,'menu_icon' 			=> $icon
-			,'hierarchical' 		=> false
+			,'hierarchical' 		=> TRUE
 			,'supports' 			=> $supports
 			,'menu_position' 		=> 10
-			,'show_in_menu'			 => true
+			,'show_in_menu'			 => TRUE
 		);
 		if ( !empty($extargs) ) {
 			$args = array_merge($args,$extargs);
 		}
 
 		register_post_type($name, $args);
+	}
+
+	/**
+	* Register function for wordpress taxonomies. Requires singular name and can optionally accept for, args, and labels
+	*
+	* @param 	string 		$name 			The name of the taxonomy (singular)
+	* @param 	string 		$objects		Optional array of post_type's to use this taxonomy for
+	* @param 	array 		$extargs 		Optional array of args to use when registering
+	* @param 	array 		$extlables 		Optional array of labels to use when registering
+	* @since 	1.0
+	*/
+	public function register_taxonomy( $name, $objects = array(), $extargs = array(), $extlabels = array() ) {
+		$proper_name = ucwords($name);
+		$labels = array(
+			'name'             		 	=> $proper_name
+		,	'singular_name'    		 	=> $proper_name
+		,	'menu_name'        		 	=> $proper_name
+		,	'all_items'        		 	=> 'All ' . $proper_name
+		,	'edit_item'       		  	=> 'Edit ' . $proper_name
+		,	'view_item' 				=> 'View ' . $proper_name
+		,	'update_item'      		 	=> 'Update ' . $proper_name
+		,	'add_new_item'     			=> 'Add New ' . $proper_name
+		,	'new_item_name'     		=> 'New ' . $proper_name . ' Name'
+		,	'search_items'      		=> 'Search ' . $proper_name
+		,	'popular_items'     		=> 'Popular ' . $proper_name
+		,	'add_or_remove_items' 		=> 'Add or Remove ' . $proper_name
+		,	'choose_from_most_used' 	=> 'Most Used ' . $proper_name
+		,	'not_found' => 'No ' . $proper_name . ' Found'
+		);
+		if ( !empty($extlabels) ) {
+			$labels = array_merge($labels,$extlabels);
+		}
+
+		$args = array(
+			'public' => TRUE
+		,	'show_ui' => TRUE
+		,	'show_in_nav_menus' => TRUE
+		,	'show_tagcloud' => TRUE
+		,	'meta_box_cb' => NULL
+		,	'show_admin_column' => FALSE
+		,	'hierarchical' => FALSE
+		,	'update_count_callback' => NULL
+		,	'rewrite' => TRUE
+		,	'capabilities' => NULL
+		,	'sort' => NULL
+		,	'labels' => $labels
+		);
+		if ( !empty($extargs) ) {
+			$args = array_merge($args,$extargs);
+		}
+
+		register_taxonomy( $name, $objects, $args );
 	}
 
 	/**
@@ -198,10 +252,25 @@ class ClientCore {
 		$types = $this->settings['add_post_types'];
 		if ( is_array($types) && count($types) > 0 ) {
 			foreach ( $types as $name=>$dashicon ) {
-				$this->register($name,$dashicon);
+				$this->register_post_type($name,$dashicon);
 			}
 		}
 	}
+
+	/**
+	* Action hook to loop through registering of taxonomies. Uses add_taxonomies key in $settings array.
+	*
+	* @since 	1.0
+	*/
+	public function add_taxonomies() {
+		$taxonomies = $this->settings['add_taxonomies'];
+		if ( is_array($taxonomies) && count($taxonomies) > 0 ) {
+			foreach ( $taxonomies as $taxonomy=>$for ) {
+				$this->register_taxonomy($taxonomy,$for);
+			}
+		}
+	}
+
 
 	/**
 	* Action callback to loop through deregistering pages. Uses remove_post_types key in $settings array.
@@ -209,10 +278,10 @@ class ClientCore {
 	* @since 	1.0
 	*/
 	public function remove_post_types() {
-		$types = $this->settings['remove_post_types'];
-		if ( is_array($types) && count($types) > 0 ) {
-			foreach ( $types as $type ) {
-    			remove_menu_page($type);
+		$pages = $this->settings['remove_post_types'];
+		if ( is_array($pages) && count($pages) > 0 ) {
+			foreach ( $pages as $page ) {
+    			remove_menu_page($page);
     		}
     	}
 	}
