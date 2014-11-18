@@ -69,7 +69,11 @@ $settings = array(
 	)
 ,	'add_post_types' => array(
 		/*
-		'name' => 'dashicon'
+		array(
+			'name' => 'news'
+			'plural' => 'newsies'
+			'icon' => 'dashicons-editor-removeformatting'
+		)
 		*/
 	)
 ,	'add_taxonomies' => array(

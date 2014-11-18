@@ -6,7 +6,7 @@
 * @package 	ClientCore
 * @author 	Clark Nidkel Powell
 * @link 	http://www.clarknikdelpowell.com
-* @version 	2.0
+* @version 	2.1
 * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License
 */
 class ClientCore {
@@ -128,30 +128,39 @@ class ClientCore {
 	* Register function for wordpress post types. Requires singular name, but will accept icon, labels, and args arrays for customization.
 	*
 	* @param 	string 		$name 			The name of the post type (singular)
+	* @param 	string 		$plural 		The plural name of the post type
 	* @param 	string 		$icon 			Optional class name of the dashicon to use
 	* @param 	array 		$extargs 		Optional array of args to use when registering
 	* @param 	array 		$extlables 		Optional array of labels to use when registering
 	* @since 	1.0
 	*/
-	public function register_post_type( $name, $icon = '', $extargs = array(), $extlabels = array(), $extsupports = array() ) {
+	public function register_post_type( $name, $plural = '', $icon = '', $extargs = array(), $extlabels = array(), $extsupports = array() ) {
+		
 		if ( $icon === '' ) {
 			$icon = 'dashicons-admin-post';
 		}
+		
 		$proper_name = ucwords($name);
+		$plural_proper_name = ucwords($plural);
+
+		if ( $plural_proper_name === '' ) {
+			$plural_proper_name = $proper_name;
+		}
+
 		$labels = array(
 			'name' 					=> $proper_name
 		,	'singular_name' 		=> $proper_name
-		,	'plural_name' 			=> $proper_name.'s'
+		,	'plural_name' 			=> $plural_proper_name
 		,	'add_new_item' 			=> 'Add New '.$proper_name
 		,	'edit_item' 			=> 'Edit '.$proper_name
 		,	'new_item' 				=> 'New '.$proper_name
 		,	'view_item' 			=> 'View '.$proper_name
-		,	'search_items' 			=> 'Search '.$proper_name.'s'
-		,	'not_found' 			=> 'No '.$proper_name.'s found.'
-		,	'not_found_in_trash' 	=> 'No '.$proper_name.'s found in Trash.'
-		,	'all_items' 			=> $proper_name.'s'
-		,	'menu_name' 			=> $proper_name.'s'
-		,	'name_admin_bar' 		=> $proper_name.'s'
+		,	'search_items' 			=> 'Search '.$plural_proper_name
+		,	'not_found' 			=> 'No '.$plural_proper_name.' found.'
+		,	'not_found_in_trash' 	=> 'No '.$plural_proper_name.' found in Trash.'
+		,	'all_items' 			=> $plural_proper_name
+		,	'menu_name' 			=> $plural_proper_name
+		,	'name_admin_bar' 		=> $plural_proper_name
 		);
 		if ( !empty($extlabels) ) {
 			$labels = array_merge($labels,$extlabels);
@@ -249,10 +258,16 @@ class ClientCore {
 	* @since 	1.0
 	*/
 	public function add_post_types() {
-		$types = $this->settings['add_post_types'];
+		$defaults = array(
+			'plural' 	=> ''
+		,	'icon' 		=> ''
+		);
+		$types = array_merge($defaults,$this->settings['add_post_types']);
 		if ( is_array($types) && count($types) > 0 ) {
-			foreach ( $types as $name=>$dashicon ) {
-				$this->register_post_type($name,$dashicon);
+			foreach ( $types as $type ) {
+				if ( isset($type['name']) ) {
+					$this->register_post_type($type['name'],$type['plural'],$type['icon']);
+				}
 			}
 		}
 	}
