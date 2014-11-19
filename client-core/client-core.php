@@ -70,9 +70,12 @@ $settings = array(
 ,	'add_post_types' => array(
 		/*
 		array(
-			'name' => 'news'
-			'plural' => 'newsies'
-			'icon' => 'dashicons-editor-removeformatting'
+			'name' => 'news'				required
+		,	'plural' => 'newsies'			optional
+		,	'icon' => 'dashicons'			optional
+		,	'supports' => array('title')	optional
+		,	'labels' => array()				optional
+		,	'args' => array()				optional
 		)
 		*/
 	)

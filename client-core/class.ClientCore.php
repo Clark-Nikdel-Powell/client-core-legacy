@@ -134,7 +134,7 @@ class ClientCore {
 	* @param 	array 		$extlables 		Optional array of labels to use when registering
 	* @since 	1.0
 	*/
-	public function register_post_type( $name, $plural = '', $icon = '', $extargs = array(), $extlabels = array(), $extsupports = array() ) {
+	public function register_post_type( $name, $plural = '', $icon = '', $extsupports = array(), $extargs = array(), $extlabels = array() ) {
 		
 		if ( $icon === '' ) {
 			$icon = 'dashicons-admin-post';
@@ -182,16 +182,16 @@ class ClientCore {
 		}
 
 		$args = array(
-			 'labels' 				=> $labels
-			,'public' 				=> TRUE
-			,'publicly_queryable' 	=> TRUE
-			,'has_archive' 			=> TRUE
-			,'show_in_nav_menus' 	=> TRUE
-			,'menu_icon' 			=> $icon
-			,'hierarchical' 		=> TRUE
-			,'supports' 			=> $supports
-			,'menu_position' 		=> 10
-			,'show_in_menu'			 => TRUE
+			'labels' 				=> $labels
+		,	'public' 				=> TRUE
+		,	'publicly_queryable' 	=> TRUE
+		,	'has_archive' 			=> TRUE
+		,	'show_in_nav_menus' 	=> TRUE
+		,	'menu_icon' 			=> $icon
+		,	'hierarchical' 			=> TRUE
+		,	'supports' 				=> $supports
+		,	'menu_position' 		=> 10
+		,	'show_in_menu'			 => TRUE
 		);
 		if ( !empty($extargs) ) {
 			$args = array_merge($args,$extargs);
@@ -258,15 +258,19 @@ class ClientCore {
 	* @since 	1.0
 	*/
 	public function add_post_types() {
+		$types = $this->settings['add_post_types'];
 		$defaults = array(
 			'plural' 	=> ''
 		,	'icon' 		=> ''
+		,	'supports' 	=> ''
+		,	'args'		=> ''
+		,	'labels'	=> ''
 		);
-		$types = array_merge($defaults,$this->settings['add_post_types']);
 		if ( is_array($types) && count($types) > 0 ) {
 			foreach ( $types as $type ) {
+				$type = array_merge($defaults,$type);
 				if ( isset($type['name']) ) {
-					$this->register_post_type($type['name'],$type['plural'],$type['icon']);
+					$this->register_post_type($type['name'],$type['plural'],$type['icon'],$type['supports'],$type['args'],$type['labels']);
 				}
 			}
 		}
