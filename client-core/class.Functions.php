@@ -6,7 +6,7 @@
 * @package 	ClientCore
 * @author 	Clark Nidkel Powell
 * @link 	http://www.clarknikdelpowell.com
-* @version 	2.0
+* @version 	2.1
 * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License
 */
 class ClientCore_Functions {
@@ -209,18 +209,19 @@ class ClientCore_Functions {
 		Displays on: News Singular
 		*/
 		$meta_bar = '';
+		$date = '';
 		if ( is_singular('news') && $vars['meta_bar'] === true ) {
 
-		if ( function_exists('get_wp_user_avatar') ) {
-			$avatar = '<span class="image">'. get_wp_user_avatar() .'</span>';
-		} else {
-			$avatar = '';
-		}
+			if ( function_exists('get_wp_user_avatar') ) {
+				$avatar = '<span class="image">'. get_wp_user_avatar() .'</span>';
+			} else {
+				$avatar = '';
+			}
 
-		$author = '<div class="author">'. $avatar .'<a href="'. get_author_posts_url($post->post_author) .'" class="name">'. get_the_author() .'</a></div>';
-		$date = '<div class="date"><i class="fa fa-clock-o"></i><span class="time">'. get_the_date('g:i a T') .'&nbsp;&nbsp;</span><span class="calendar-date">'. get_the_date('F j, Y') .'</span></div>';
+			$author = '<div class="author">'. $avatar .'<a href="'. get_author_posts_url($post->post_author) .'" class="name">'. get_the_author() .'</a></div>';
+			$date = '<div class="date"><i class="fa fa-clock-o"></i><span class="time">'. get_the_date('g:i a T') .'&nbsp;&nbsp;</span><span class="calendar-date">'. get_the_date('F j, Y') .'</span></div>';
 
-		$meta_bar = '<footer class="meta">'. $author . $date .'</footer>';
+			$meta_bar = '<footer class="meta">'. $author . $date .'</footer>';
 
 		}
 
@@ -262,6 +263,7 @@ class ClientCore_Functions {
 		Requires: Lepidoptera
 		Displays on: Singular
 		*/
+		$actions_nav = '';
 		if ( function_exists('LEPI_get_tw_button') && $vars['like_follow'] === true ) {
 			if ( is_singular() && $post->post_type == 'news' ) {
 				$actions_nav = '<nav class="actions"><h5 class="nav-title">Follow Florida Citrus!</h5> <div class="follow">'. LEPI_get_tw_button('type=follow') . LEPI_get_fb_button() .'</div></nav>';
