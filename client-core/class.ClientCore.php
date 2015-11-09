@@ -288,9 +288,23 @@ class ClientCore {
 	*/
 	public function add_taxonomies() {
 		$taxonomies = $this->settings['add_taxonomies'];
+
 		if ( is_array($taxonomies) && count($taxonomies) > 0 ) {
-			foreach ( $taxonomies as $taxonomy=>$for ) {
-				$this->register_taxonomy($taxonomy,$for);
+
+			foreach ( $taxonomies as $taxonomy_slug => $taxonomy_args ) {
+
+				$custom_args = '';
+				if ( isset( $taxonomy_args['args'] ) && !empty( $taxonomy_args['args'] ) ) {
+					$custom_args = $taxonomy_args['args'];
+				}
+
+				$custom_labels = '';
+				if ( isset( $taxonomy_args['labels'] ) && !empty( $taxonomy_args['labels'] ) ) {
+					$custom_labels = $taxonomy_args['labels'];
+				}
+
+				$this->register_taxonomy( $taxonomy_slug, $taxonomy_args['objects'], $custom_args, $custom_labels );
+
 			}
 		}
 	}
