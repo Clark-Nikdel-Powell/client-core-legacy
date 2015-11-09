@@ -3,7 +3,7 @@
 /*
 	Plugin Name: Client Core
 	Plugin URI: http://clarknikdelpowell.com
-	Version: 2.0.0
+	Version: 2.1.0
 	Description: Core functionality for a client site
 	Author: Glenn Welser, Sam Mello & Josh Nederveld
 	Author URI: http://clarknikdelpowell.com/agency/people/
@@ -36,13 +36,13 @@ require_once( SITE_PATH . 'class.ClientCore.php' );
 require_once( SITE_PATH . 'class.Functions.php' );
 
 
-/* 
+/*
 
-Settings for Client Core: 
+Settings for Client Core:
 
 - options_page 			= 	Whether to generate an options page for CNP settings & ACF
 - post_formats 			= 	Extra post formats to add
-- custom_image_sizes 	= 	Custom image sizes to create 
+- custom_image_sizes 	= 	Custom image sizes to create
 - add_post_types 		= 	Array of post types to add (public function "register" can also be used to override default settings)
 - remove_post_types 	= 	Array of pages to hide in the admin section
 
@@ -98,6 +98,16 @@ $settings = array(
 		/*
 		'name' => 'filename.css'
 		*/
+	)
+,	'p2p_connections' => array(
+		array(
+			'name' => '',
+			'from' => '',
+			'to' => '',
+			'reciprocal' => TRUE,
+			'sortable' => 'any',
+			'title' => array( 'from' => '', 'to' => '' )
+		)
 	)
 );
 

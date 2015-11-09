@@ -29,9 +29,10 @@ class ClientCore {
 	,	'remove_post_types' 	=> array()
 	,	'add_css' 				=> array()
 	,	'add_js' 				=> array()
+	,	'p2p_connections'       => array()
 	);
 
-	
+
 	/**
 	* Initial constructor. Occurrs at instantiation.
 	*
@@ -95,7 +96,7 @@ class ClientCore {
 
 	/**
 	* Sets the custom post formats for this site. Uses post_formats key in $settings array.
-	* 
+	*
 	* @since 	1.0
 	*/
 	public function set_post_formats() {
@@ -135,11 +136,11 @@ class ClientCore {
 	* @since 	1.0
 	*/
 	public function register_post_type( $name, $plural = '', $icon = '', $extsupports = array(), $extargs = array(), $extlabels = array() ) {
-		
+
 		if ( $icon === '' ) {
 			$icon = 'dashicons-admin-post';
 		}
-		
+
 		$proper_name = ucwords($name);
 		$plural_proper_name = ucwords($plural);
 
@@ -241,7 +242,6 @@ class ClientCore {
 		,	'hierarchical' => FALSE
 		,	'update_count_callback' => NULL
 		,	'rewrite' => TRUE
-		,	'capabilities' => NULL
 		,	'sort' => NULL
 		,	'labels' => $labels
 		);
@@ -330,6 +330,31 @@ class ClientCore {
 			foreach ( $scripts as $name=>$script ) {
 				wp_enqueue_script( $name, SITE_URL . '/js/' . $script, array('jquery'), null, TRUE );
 			}
+		}
+	}
+
+	/**
+	* Registers p2p connections
+	*
+	* @since 	2.1
+	*/
+	public function p2p_connections() {
+
+		// Check to make sure function exists first
+		if ( !function_exists('p2p_register_connection_type') ) {
+			return false;
+		}
+
+		// Get connections from settings
+		$connections = $this->settings['p2p_connections'];
+
+		// If there are connections, register them.
+		if ( is_array($connections) && count($connections) > 0 ) {
+
+			foreach ( $connections as $slug => $connection_settings ) {
+				p2p_register_connection_type($connection_settings);
+			}
+
 		}
 	}
 }
