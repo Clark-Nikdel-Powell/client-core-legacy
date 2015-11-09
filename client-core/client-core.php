@@ -33,8 +33,6 @@ define( 'SITE_URL', SITE_LOCAL ? plugins_url().'/Client-Core/' : plugin_dir_url(
 
 /* Classes Required To Function */
 require_once( SITE_PATH . 'class.ClientCore.php' );
-require_once( SITE_PATH . 'class.Functions.php' );
-
 
 /*
 
@@ -44,7 +42,11 @@ Settings for Client Core:
 - post_formats 			= 	Extra post formats to add
 - custom_image_sizes 	= 	Custom image sizes to create
 - add_post_types 		= 	Array of post types to add (public function "register" can also be used to override default settings)
+- add_taxonomies        =   Array of taxonomies to add
 - remove_post_types 	= 	Array of pages to hide in the admin section
+- add CSS               =   Admin-specific CSS to add
+- add JS                =   Admin-specific JS to add
+- p2p_connections       =   Post 2 Post connections registration - @see https://github.com/scribu/wp-posts-to-posts/wiki/p2p_register_connection_type
 
 Feel free to remove option keys below that you don't need. They are just listed there for example.
 
@@ -100,28 +102,16 @@ $settings = array(
 		*/
 	)
 ,	'p2p_connections' => array(
-		array(
+/*		array(
 			'name' => '',
 			'from' => '',
 			'to' => '',
 			'reciprocal' => TRUE,
 			'sortable' => 'any',
 			'title' => array( 'from' => '', 'to' => '' )
-		)
+		)*/
 	)
 );
 
 /* Core Class Called (parent to all other classes) */
 $ClientCore = new ClientCore($settings);
-
-/*
-
-Function Usage:
-
-- "$ClientCore->do" 				is the parent object for all function calls.
-- "$ClientCore->do->tweets" 		uses Lepidoptera to load the tweets markup.
-- "$ClientCore->do->event_dates" 	uses Tzolkin to format event dates for display.
-- "$ClientCore->do->search_excerpt" Loads the markup for searches in WordPress.
-- "$ClientCore->do->post_header" 	Standardizes and unifies the markup for the postdata header.
-
-*/

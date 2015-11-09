@@ -74,6 +74,7 @@ class ClientCore {
 		add_action( 'init', array( $this, 'add_taxonomies' ) );
 		add_action( 'admin_init', array( $this, 'css' ) );
 		add_action( 'admin_init', array( $this, 'js' ) );
+		add_action( 'p2p_init', array( $this, 'p2p_connections' ) );
 	}
 
 	/**
@@ -205,13 +206,15 @@ class ClientCore {
 	* Register function for wordpress taxonomies. Requires singular name and can optionally accept for, args, and labels
 	*
 	* @param 	string 		$name 			The name of the taxonomy (singular)
-	* @param 	string 		$objects		Optional array of post_type's to use this taxonomy for
+	* @param 	string 		$objects		Optional array of post_types to use this taxonomy for
 	* @param 	array 		$extargs 		Optional array of args to use when registering
 	* @param 	array 		$extlables 		Optional array of labels to use when registering
 	* @since 	1.0
 	*/
-	public function register_taxonomy( $name, $objects = array(), $extargs = array(), $extlabels = array() ) {
-		$proper_name = ucwords($name);
+	public function register_taxonomy( $name, $objects=array(), $extargs=array(), $extlabels=array() ) {
+
+		$proper_name = ucwords( $name );
+
 		$labels = array(
 			'name'             		 	=> $proper_name
 		,	'singular_name'    		 	=> $proper_name
@@ -228,8 +231,9 @@ class ClientCore {
 		,	'choose_from_most_used' 	=> 'Most Used ' . $proper_name
 		,	'not_found' => 'No ' . $proper_name . ' Found'
 		);
-		if ( !empty($extlabels) ) {
-			$labels = array_merge($labels,$extlabels);
+
+		if ( !empty( $extlabels ) ) {
+			$labels = array_merge( $labels, $extlabels );
 		}
 
 		$args = array(
@@ -245,8 +249,9 @@ class ClientCore {
 		,	'sort' => NULL
 		,	'labels' => $labels
 		);
-		if ( !empty($extargs) ) {
-			$args = array_merge($args,$extargs);
+
+		if ( !empty( $extargs ) ) {
+			$args = array_merge( $args, $extargs );
 		}
 
 		register_taxonomy( $name, $objects, $args );
