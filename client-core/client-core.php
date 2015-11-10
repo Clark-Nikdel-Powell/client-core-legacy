@@ -33,6 +33,7 @@ define( 'SITE_URL', SITE_LOCAL ? plugins_url().'/Client-Core/' : plugin_dir_url(
 
 /* Classes Required To Function */
 require_once( SITE_PATH . 'class.ClientCore.php' );
+require_once( SITE_PATH . 'class.ClientPosts.php' );
 
 /*
 
@@ -115,3 +116,14 @@ $settings = array(
 
 /* Core Class Called (parent to all other classes) */
 $ClientCore = new ClientCore($settings);
+
+$posts_settings = array(
+    'post_meta' => array(
+        /*
+        'meta_field',
+        'meta_field_2'
+         */
+    )
+);
+
+$ClientPosts = new ClientPosts($posts_settings);
