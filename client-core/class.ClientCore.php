@@ -29,7 +29,6 @@ class ClientCore {
 	,	'remove_post_types' 	=> array()
 	,	'add_css' 				=> array()
 	,	'add_js' 				=> array()
-	,	'p2p_connections'       => array()
 	);
 
 
@@ -74,7 +73,6 @@ class ClientCore {
 		add_action( 'init', array( $this, 'add_taxonomies' ) );
 		add_action( 'admin_init', array( $this, 'css' ) );
 		add_action( 'admin_init', array( $this, 'js' ) );
-		add_action( 'p2p_init', array( $this, 'p2p_connections' ) );
 	}
 
 	/**
@@ -352,28 +350,4 @@ class ClientCore {
 		}
 	}
 
-	/**
-	* Registers p2p connections
-	*
-	* @since 	2.1
-	*/
-	public function p2p_connections() {
-
-		// Check to make sure function exists first
-		if ( !function_exists('p2p_register_connection_type') ) {
-			return false;
-		}
-
-		// Get connections from settings
-		$connections = $this->settings['p2p_connections'];
-
-		// If there are connections, register them.
-		if ( is_array($connections) && count($connections) > 0 ) {
-
-			foreach ( $connections as $slug => $connection_settings ) {
-				p2p_register_connection_type($connection_settings);
-			}
-
-		}
-	}
 }
