@@ -26,9 +26,9 @@
 
 
 /* Global Variables */
-define( 'SITE_LOCAL', ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1') );
-define( 'SITE_PATH', plugin_dir_path(__FILE__) );
-define( 'SITE_URL', SITE_LOCAL ? plugins_url().'/Client-Core/' : plugin_dir_url(__FILE__) );
+define( 'SITE_LOCAL', ( $_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1' ) );
+define( 'SITE_PATH', plugin_dir_path( __FILE__ ) );
+define( 'SITE_URL', SITE_LOCAL ? plugins_url() . '/Client-Core/' : plugin_dir_url( __FILE__ ) );
 
 
 /* Classes Required To Function */
@@ -54,15 +54,34 @@ Feel free to remove option keys below that you don't need. They are just listed 
 */
 
 $settings = array(
-	'options_page' => FALSE
-,	'post_formats' => array(
-		/*
+	'options_pages'      => [
+		'cnp_settings'       => [
+			'display'    => true,
+			'page_title' => 'CNP Settings',
+			'menu_title' => 'CNP Settings',
+			'menu_slug'  => 'cnp-settings',
+			'capability' => 'activate_plugins',
+			'icon_url'   => 'dashicons-wordpress',
+			'redirect'   => false
+		],
+		'slideshow_settings' => [
+			'display'    => false,
+			'page_title' => 'Slideshow Settings',
+			'menu_title' => 'Slideshow Settings',
+			'menu_slug'  => 'cnp-slideshow-settings',
+			'capability' => 'activate_plugins',
+			'icon_url'   => 'dashicons-images-alt2',
+			'redirect'   => false
+		]
+	]
+,
+	'post_formats'       => array(/*
 		'video'
 	,	'gallery'
 		*/
 	)
-,	'custom_image_sizes' => array(
-		/*
+,
+	'custom_image_sizes' => array(/*
 		'name' => array(
 			'x' => 0
 		,	'y' => 0
@@ -70,8 +89,8 @@ $settings = array(
 		)
 		*/
 	)
-,	'add_post_types' => array(
-		/*
+,
+	'add_post_types'     => array(/*
 		array(
 			'name' => 'news'				required
 		,	'plural' => 'newsies'			optional
@@ -82,28 +101,28 @@ $settings = array(
 		)
 		*/
 	)
-,	'add_taxonomies' => array(
-		/*
+,
+	'add_taxonomies'     => array(/*
 		'name' => array('posts','pages')
 		*/
 	)
-,	'remove_post_types' => array(
-		/*
+,
+	'remove_post_types'  => array(/*
 		'edit.php'
 		*/
 	)
-,	'add_css' => array(
-		/*
+,
+	'add_css'            => array(/*
 		'name' => 'filename.css'
 		*/
 	)
-,	'add_js' => array(
-		/*
+,
+	'add_js'             => array(/*
 		'name' => 'filename.css'
 		*/
 	)
-,	'p2p_connections' => array(
-/*		array(
+,
+	'p2p_connections'    => array(/*		array(
 			'name' => '',
 			'from' => '',
 			'to' => '',
@@ -115,15 +134,14 @@ $settings = array(
 );
 
 /* Core Class Called (parent to all other classes) */
-$ClientCore = new ClientCore($settings);
+$ClientCore = new ClientCore( $settings );
 
 $posts_settings = array(
-    'post_meta' => array(
-        /*
+	'post_meta' => array(/*
         'meta_field',
         'meta_field_2'
          */
-    )
+	)
 );
 
-$ClientPosts = new ClientPosts($posts_settings);
+$ClientPosts = new ClientPosts( $posts_settings );
