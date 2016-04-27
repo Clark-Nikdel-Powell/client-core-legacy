@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Core Plugin for Client Website Creation
  *
@@ -21,20 +20,13 @@ class ClientCore {
 	public $do = null;
 	public $timezone = '';
 	public $settings = array(
-		'post_formats'       => array()
-	,
-		'custom_image_sizes' => array()
-	,
-		'options_pages'      => array()
-	,
-		'add_post_types'     => array()
-	,
-		'add_taxonomies'     => array()
-	,
-		'remove_post_types'  => array()
-	,
-		'add_css'            => array()
-	,
+		'post_formats'       => array(),
+		'custom_image_sizes' => array(),
+		'options_pages'      => array(),
+		'add_post_types'     => array(),
+		'add_taxonomies'     => array(),
+		'remove_post_types'  => array(),
+		'add_css'            => array(),
 		'add_js'             => array()
 	);
 
@@ -175,30 +167,18 @@ class ClientCore {
 		}
 
 		$labels = array(
-			'name'               => $proper_name
-		,
-			'singular_name'      => $proper_name
-		,
-			'plural_name'        => $plural_proper_name
-		,
-			'add_new_item'       => 'Add New ' . $proper_name
-		,
-			'edit_item'          => 'Edit ' . $proper_name
-		,
-			'new_item'           => 'New ' . $proper_name
-		,
-			'view_item'          => 'View ' . $proper_name
-		,
-			'search_items'       => 'Search ' . $plural_proper_name
-		,
-			'not_found'          => 'No ' . $plural_proper_name . ' found.'
-		,
-			'not_found_in_trash' => 'No ' . $plural_proper_name . ' found in Trash.'
-		,
-			'all_items'          => $plural_proper_name
-		,
-			'menu_name'          => $plural_proper_name
-		,
+			'name'               => $proper_name,
+			'singular_name'      => $proper_name,
+			'plural_name'        => $plural_proper_name,
+			'add_new_item'       => 'Add New ' . $proper_name,
+			'edit_item'          => 'Edit ' . $proper_name,
+			'new_item'           => 'New ' . $proper_name,
+			'view_item'          => 'View ' . $proper_name,
+			'search_items'       => 'Search ' . $plural_proper_name,
+			'not_found'          => 'No ' . $plural_proper_name . ' found.',
+			'not_found_in_trash' => 'No ' . $plural_proper_name . ' found in Trash.',
+			'all_items'          => $plural_proper_name,
+			'menu_name'          => $plural_proper_name,
 			'name_admin_bar'     => $plural_proper_name
 		);
 		if ( ! empty( $extlabels ) ) {
@@ -206,12 +186,9 @@ class ClientCore {
 		}
 
 		$supports = array(
-			'title'
-		,
-			'editor'
-		,
-			'revisions'
-		,
+			'title',
+			'editor',
+			'revisions',
 			'thumbnail'
 		);
 		if ( ! empty( $extsupports ) ) {
@@ -223,24 +200,15 @@ class ClientCore {
 		}
 
 		$args = array(
-			'labels'             => $labels
-		,
-			'public'             => true
-		,
-			'publicly_queryable' => true
-		,
-			'has_archive'        => true
-		,
-			'show_in_nav_menus'  => true
-		,
-			'menu_icon'          => $icon
-		,
-			'hierarchical'       => true
-		,
-			'supports'           => $supports
-		,
-			'menu_position'      => 10
-		,
+			'labels'             => $labels,
+			'public'             => true,
+			'publicly_queryable' => true,
+			'has_archive'        => true,
+			'show_in_nav_menus'  => true,
+			'menu_icon'          => $icon,
+			'hierarchical'       => true,
+			'supports'           => $supports,
+			'menu_position'      => 10,
 			'show_in_menu'       => true
 		);
 		if ( ! empty( $extargs ) ) {
@@ -265,32 +233,19 @@ class ClientCore {
 		$proper_name = ucwords( $name );
 
 		$labels = array(
-			'name'                  => $proper_name
-		,
-			'singular_name'         => $proper_name
-		,
-			'menu_name'             => $proper_name
-		,
-			'all_items'             => 'All ' . $proper_name
-		,
-			'edit_item'             => 'Edit ' . $proper_name
-		,
-			'view_item'             => 'View ' . $proper_name
-		,
-			'update_item'           => 'Update ' . $proper_name
-		,
-			'add_new_item'          => 'Add New ' . $proper_name
-		,
-			'new_item_name'         => 'New ' . $proper_name . ' Name'
-		,
-			'search_items'          => 'Search ' . $proper_name
-		,
-			'popular_items'         => 'Popular ' . $proper_name
-		,
-			'add_or_remove_items'   => 'Add or Remove ' . $proper_name
-		,
-			'choose_from_most_used' => 'Most Used ' . $proper_name
-		,
+			'name'                  => $proper_name,
+			'singular_name'         => $proper_name,
+			'menu_name'             => $proper_name,
+			'all_items'             => 'All ' . $proper_name,
+			'edit_item'             => 'Edit ' . $proper_name,
+			'view_item'             => 'View ' . $proper_name,
+			'update_item'           => 'Update ' . $proper_name,
+			'add_new_item'          => 'Add New ' . $proper_name,
+			'new_item_name'         => 'New ' . $proper_name . ' Name',
+			'search_items'          => 'Search ' . $proper_name,
+			'popular_items'         => 'Popular ' . $proper_name,
+			'add_or_remove_items'   => 'Add or Remove ' . $proper_name,
+			'choose_from_most_used' => 'Most Used ' . $proper_name,
 			'not_found'             => 'No ' . $proper_name . ' Found'
 		);
 
@@ -299,26 +254,16 @@ class ClientCore {
 		}
 
 		$args = array(
-			'public'                => true
-		,
-			'show_ui'               => true
-		,
-			'show_in_nav_menus'     => true
-		,
-			'show_tagcloud'         => true
-		,
-			'meta_box_cb'           => null
-		,
-			'show_admin_column'     => false
-		,
-			'hierarchical'          => false
-		,
-			'update_count_callback' => null
-		,
-			'rewrite'               => true
-		,
-			'sort'                  => null
-		,
+			'public'                => true,
+			'show_ui'               => true,
+			'show_in_nav_menus'     => true,
+			'show_tagcloud'         => true,
+			'meta_box_cb'           => null,
+			'show_admin_column'     => false,
+			'hierarchical'          => false,
+			'update_count_callback' => null,
+			'rewrite'               => true,
+			'sort'                  => null,
 			'labels'                => $labels
 		);
 
@@ -337,14 +282,10 @@ class ClientCore {
 	public function add_post_types() {
 		$types    = $this->settings['add_post_types'];
 		$defaults = array(
-			'plural'   => ''
-		,
-			'icon'     => ''
-		,
-			'supports' => ''
-		,
-			'args'     => ''
-		,
+			'plural'   => '',
+			'icon'     => '',
+			'supports' => '',
+			'args'     => '',
 			'labels'   => ''
 		);
 		if ( is_array( $types ) && count( $types ) > 0 ) {
@@ -427,5 +368,4 @@ class ClientCore {
 			}
 		}
 	}
-
 }
