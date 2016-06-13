@@ -19,16 +19,16 @@ class ClientCore {
 	 */
 	public $do = null;
 	public $timezone = '';
-	public $settings = array(
-		'post_formats'       => array(),
-		'custom_image_sizes' => array(),
-		'options_pages'      => array(),
-		'add_post_types'     => array(),
-		'add_taxonomies'     => array(),
-		'remove_post_types'  => array(),
-		'add_css'            => array(),
-		'add_js'             => array()
-	);
+	public $settings = [
+		'post_formats'       => [ ],
+		'custom_image_sizes' => [ ],
+		'options_pages'      => [ ],
+		'add_post_types'     => [ ],
+		'add_taxonomies'     => [ ],
+		'remove_post_types'  => [ ],
+		'add_css'            => [ ],
+		'add_js'             => [ ]
+	];
 
 
 	/**
@@ -70,11 +70,12 @@ class ClientCore {
 	 * @since    1.0
 	 */
 	public function hook_wordpress() {
-		add_action( 'admin_menu', array( $this, 'remove_post_types' ) );
-		add_action( 'init', array( $this, 'add_post_types' ) );
-		add_action( 'init', array( $this, 'add_taxonomies' ) );
-		add_action( 'admin_init', array( $this, 'css' ) );
-		add_action( 'admin_init', array( $this, 'js' ) );
+		add_action( 'admin_menu', [ $this, 'remove_post_types' ] );
+		add_action( 'init', [ $this, 'add_post_types' ] );
+		add_action( 'init', [ $this, 'add_taxonomies' ] );
+		add_action( 'init', [ $this, 'add_sidebars' ] );
+		add_action( 'admin_init', [ $this, 'css' ] );
+		add_action( 'admin_init', [ $this, 'js' ] );
 	}
 
 	/**
@@ -93,7 +94,7 @@ class ClientCore {
 			}
 		}
 
-		return;
+		return true;
 	}
 
 	/**
@@ -131,14 +132,14 @@ class ClientCore {
 				continue;
 			}
 
-			acf_add_options_page( array(
-				'page_title' => $options_page['title'],
+			acf_add_options_page( [
+				'page_title' => $options_page['page_title'],
 				'menu_title' => $options_page['menu_title'],
 				'menu_slug'  => $options_page['menu_slug'],
 				'capability' => $options_page['capability'],
 				'icon_url'   => $options_page['icon_url'],
 				'redirect'   => $options_page['redirect']
-			) );
+			] );
 		}
 	}
 
@@ -153,7 +154,7 @@ class ClientCore {
 	 *
 	 * @since    1.0
 	 */
-	public function register_post_type( $name, $plural = '', $icon = '', $extsupports = array(), $extargs = array(), $extlabels = array() ) {
+	public function register_post_type( $name, $plural = '', $icon = '', $extsupports = [ ], $extargs = [ ], $extlabels = [ ] ) {
 
 		if ( $icon === '' ) {
 			$icon = 'dashicons-admin-post';
@@ -166,7 +167,7 @@ class ClientCore {
 			$plural_proper_name = $proper_name;
 		}
 
-		$labels = array(
+		$labels = [
 			'name'               => $proper_name,
 			'singular_name'      => $proper_name,
 			'plural_name'        => $plural_proper_name,
@@ -180,26 +181,26 @@ class ClientCore {
 			'all_items'          => $plural_proper_name,
 			'menu_name'          => $plural_proper_name,
 			'name_admin_bar'     => $plural_proper_name
-		);
+		];
 		if ( ! empty( $extlabels ) ) {
 			$labels = array_merge( $labels, $extlabels );
 		}
 
-		$supports = array(
+		$supports = [
 			'title',
 			'editor',
 			'revisions',
 			'thumbnail'
-		);
+		];
 		if ( ! empty( $extsupports ) ) {
 			if ( isset( $extsupports['none'] ) && $extsupports['none'] === false ) {
-				$supports = array();
+				$supports = [ ];
 			} else {
 				$supports = $extsupports;
 			}
 		}
 
-		$args = array(
+		$args = [
 			'labels'             => $labels,
 			'public'             => true,
 			'publicly_queryable' => true,
@@ -210,7 +211,7 @@ class ClientCore {
 			'supports'           => $supports,
 			'menu_position'      => 10,
 			'show_in_menu'       => true
-		);
+		];
 		if ( ! empty( $extargs ) ) {
 			$args = array_merge( $args, $extargs );
 		}
@@ -228,11 +229,11 @@ class ClientCore {
 	 *
 	 * @since    1.0
 	 */
-	public function register_taxonomy( $name, $objects = array(), $extargs = array(), $extlabels = array() ) {
+	public function register_taxonomy( $name, $objects = [ ], $extargs = [ ], $extlabels = [ ] ) {
 
 		$proper_name = ucwords( $name );
 
-		$labels = array(
+		$labels = [
 			'name'                  => $proper_name,
 			'singular_name'         => $proper_name,
 			'menu_name'             => $proper_name,
@@ -247,13 +248,13 @@ class ClientCore {
 			'add_or_remove_items'   => 'Add or Remove ' . $proper_name,
 			'choose_from_most_used' => 'Most Used ' . $proper_name,
 			'not_found'             => 'No ' . $proper_name . ' Found'
-		);
+		];
 
 		if ( ! empty( $extlabels ) ) {
 			$labels = array_merge( $labels, $extlabels );
 		}
 
-		$args = array(
+		$args = [
 			'public'                => true,
 			'show_ui'               => true,
 			'show_in_nav_menus'     => true,
@@ -265,13 +266,32 @@ class ClientCore {
 			'rewrite'               => true,
 			'sort'                  => null,
 			'labels'                => $labels
-		);
+		];
 
 		if ( ! empty( $extargs ) ) {
 			$args = array_merge( $args, $extargs );
 		}
 
 		register_taxonomy( $name, $objects, $args );
+	}
+
+	public function register_sidebar( $args ) {
+
+		$defaults = [
+			'name'          => '',
+			'id'            => '',
+			'description'   => '',
+			'class'         => '',
+			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</div>',
+			'before_title'  => '<h3 class="widgettitle">',
+			'after_title'   => '</h3>'
+		];
+
+		$vars = wp_parse_args( $args, $defaults );
+
+		register_sidebar( $vars );
+
 	}
 
 	/**
@@ -281,13 +301,13 @@ class ClientCore {
 	 */
 	public function add_post_types() {
 		$types    = $this->settings['add_post_types'];
-		$defaults = array(
+		$defaults = [
 			'plural'   => '',
 			'icon'     => '',
 			'supports' => '',
 			'args'     => '',
 			'labels'   => ''
-		);
+		];
 		if ( is_array( $types ) && count( $types ) > 0 ) {
 			foreach ( $types as $type ) {
 				$type = array_merge( $defaults, $type );
@@ -322,6 +342,18 @@ class ClientCore {
 
 				$this->register_taxonomy( $taxonomy_slug, $taxonomy_args['objects'], $custom_args, $custom_labels );
 
+			}
+		}
+	}
+
+
+	public function add_sidebars() {
+		$sidebars = $this->settings['add_sidebars'];
+
+		if ( is_array( $sidebars ) && count( $sidebars ) > 0 ) {
+
+			foreach ( $sidebars as $sidebar_slug => $sidebar_args ) {
+				$this->register_sidebar( $sidebar_args );
 			}
 		}
 	}
@@ -364,7 +396,7 @@ class ClientCore {
 		$scripts = $this->settings['add_js'];
 		if ( is_array( $scripts ) && count( $scripts ) > 0 ) {
 			foreach ( $scripts as $name => $script ) {
-				wp_enqueue_script( $name, SITE_URL . '/js/' . $script, array( 'jquery' ), null, true );
+				wp_enqueue_script( $name, SITE_URL . '/js/' . $script, [ 'jquery' ], null, true );
 			}
 		}
 	}

@@ -1,5 +1,4 @@
 <?php
-
 /*
 	Plugin Name: Client Core
 	Plugin URI: http://clarknikdelpowell.com
@@ -53,7 +52,7 @@ Feel free to remove option keys below that you don't need. They are just listed 
 
 */
 
-$settings = array(
+$settings = [
 	'options_pages'      => [
 		'cnp_settings'       => [
 			'display'    => true,
@@ -75,73 +74,102 @@ $settings = array(
 		]
 	]
 ,
-	'post_formats'       => array(/*
+	'post_formats'       => [/*
 		'video'
 	,	'gallery'
 		*/
-	)
+	]
 ,
-	'custom_image_sizes' => array(/*
-		'name' => array(
-			'x' => 0
-		,	'y' => 0
-		,	'crop' => FALSE
-		)
+	'custom_image_sizes' => [/*'2-1_large' => [
+			'x'    => 1000,
+			'y'    => 500,
+			'crop' => true
+		)*/
+	]
+,
+	'add_post_types'     => [/*
+		[
+			'name'     => 'news',
+			'plural'   => 'news',
+			'icon'     => 'dashicons-media-document',
+			'supports' => [ 'title', 'excerpt', 'editor', 'thumbnail' ],
+			'labels'   => [
+				'menu_name'     => 'Company News',
+				'singular_name' => 'Article'
+			],
+			'args'     => [
+				'menu_position' => 5,
+				'hierarchical'  => false,
+			]
 		*/
-	)
+	]
 ,
-	'add_post_types'     => array(/*
-		array(
-			'name' => 'news'				required
-		,	'plural' => 'newsies'			optional
-		,	'icon' => 'dashicons'			optional
-		,	'supports' => array('title')	optional
-		,	'labels' => array()				optional
-		,	'args' => array()				optional
-		)
-		*/
-	)
-,
-	'add_taxonomies'     => array(/*
-		'name' => array('posts','pages')
-		*/
-	)
-,
-	'remove_post_types'  => array(/*
+	'add_taxonomies'     => [
+		'media-category' => [
+			'objects' => [ 'attachment' ],
+			'args'    => [
+				'show_admin_column'     => true,
+				'hierarchical'          => true,
+				'update_count_callback' => '_update_generic_term_count'
+			],
+			'labels'  => [
+				'name'                  => 'Media Categories',
+				'singular_name'         => 'Media Category',
+				'menu_name'             => 'Media Categories',
+				'all_items'             => 'All Media Categories',
+				'edit_item'             => 'Edit Media Category',
+				'view_item'             => 'View Media Category',
+				'update_item'           => 'Update Media Category',
+				'add_new_item'          => 'Add Media Category',
+				'new_item_name'         => 'New Category Name',
+				'search_items'          => 'Search Media Categories',
+				'popular_items'         => 'Popular Media Categories',
+				'add_or_remove_items'   => 'Add or Remove Media Category',
+				'choose_from_most_used' => 'Most Used Media Categories',
+				'not_found'             => 'No Media Categories Found'
+			]
+		]
+	],
+	'remove_post_types'  => [/*
 		'edit.php'
 		*/
-	)
-,
-	'add_css'            => array(/*
+	],
+	'add_sidebars'       => [
+		/*'blog' => [
+			'name'         => __( 'Blog Sidebar', 'theme_text_domain' ),
+			'id'           => 'blog-sidebar',
+			'before_title' => '<h4 class="widget__title">',
+			'after_title'  => '</h4>'
+		],*/
+	],
+	'add_css'            => [/*
 		'name' => 'filename.css'
 		*/
-	)
-,
-	'add_js'             => array(/*
+	],
+	'add_js'             => [/*
 		'name' => 'filename.css'
 		*/
-	)
-,
-	'p2p_connections'    => array(/*		array(
+	],
+	'p2p_connections'    => [/*		[
 			'name' => '',
 			'from' => '',
 			'to' => '',
 			'reciprocal' => TRUE,
 			'sortable' => 'any',
-			'title' => array( 'from' => '', 'to' => '' )
-		)*/
-	)
-);
+			'title' => [ 'from' => '', 'to' => '' ]
+		]*/
+	]
+];
 
 /* Core Class Called (parent to all other classes) */
 $ClientCore = new ClientCore( $settings );
 
-$posts_settings = array(
-	'post_meta' => array(/*
+$posts_settings = [
+	'post_meta' => [/*
         'meta_field',
         'meta_field_2'
          */
-	)
-);
+	]
+];
 
 $ClientPosts = new ClientPosts( $posts_settings );

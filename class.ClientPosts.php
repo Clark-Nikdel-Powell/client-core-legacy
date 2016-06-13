@@ -17,9 +17,9 @@ class ClientPosts {
      *
      * @since 1.0
      */
-    public $settings = array(
-        'post_meta' => array()
-    );
+    public $settings = [
+        'post_meta' => [ ]
+    ];
 
     /**
      * Initial constructor
@@ -27,7 +27,7 @@ class ClientPosts {
      *
      * @since 1.0
      */
-    public function __construct($settings = array()) {
+    public function __construct($settings = [ ] ) {
         $this->settings = array_merge($this->settings, $settings);
         $this->hook_wordpress();
         return;
@@ -39,7 +39,7 @@ class ClientPosts {
      * @since 1.0
      */
     public function hook_wordpress() {
-        add_filter( 'the_posts', array($this, 'posts_filter') );
+        add_filter( 'the_posts', [ $this, 'posts_filter' ] );
     }
 
     /**
