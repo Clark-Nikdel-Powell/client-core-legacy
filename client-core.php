@@ -25,14 +25,14 @@
 
 
 /* Global Variables */
-define( 'SITE_LOCAL', ( $_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1' ) );
+define( 'SITE_LOCAL', ( 'localhost' === $_SERVER['SERVER_NAME']  || '127.0.0.1' === $_SERVER['SERVER_NAME'] ) );
 define( 'SITE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SITE_URL', SITE_LOCAL ? plugins_url() . '/Client-Core/' : plugin_dir_url( __FILE__ ) );
 
 
 /* Classes Required To Function */
-require_once( SITE_PATH . 'class.ClientCore.php' );
-require_once( SITE_PATH . 'class.ClientPosts.php' );
+require_once( SITE_PATH . 'class.clientcore.php' );
+require_once( SITE_PATH . 'class.clientposts.php' );
 
 /*
 
@@ -61,7 +61,7 @@ $settings = [
 			'menu_slug'  => 'cnp-settings',
 			'capability' => 'activate_plugins',
 			'icon_url'   => 'dashicons-wordpress',
-			'redirect'   => false
+			'redirect'   => false,
 		],
 		'slideshow_settings' => [
 			'display'    => false,
@@ -70,25 +70,22 @@ $settings = [
 			'menu_slug'  => 'cnp-slideshow-settings',
 			'capability' => 'activate_plugins',
 			'icon_url'   => 'dashicons-images-alt2',
-			'redirect'   => false
-		]
-	]
-,
-	'post_formats'       => [/*
-		'video'
-	,	'gallery'
-		*/
-	]
-,
-	'custom_image_sizes' => [/*'2-1_large' => [
+			'redirect'   => false,
+		],
+	],
+	'post_formats'       => [
+		/*'video',
+		'gallery',*/
+	],
+	'custom_image_sizes' => [
+		/*'2-1_large' => [
 			'x'    => 1000,
 			'y'    => 500,
-			'crop' => true
-		)*/
-	]
-,
-	'add_post_types'     => [/*
-		[
+			'crop' => true,
+		],*/
+	],
+	'add_post_types'     => [
+		/*[
 			'name'     => 'news',
 			'plural'   => 'news',
 			'icon'     => 'dashicons-media-document',
@@ -100,17 +97,16 @@ $settings = [
 			'args'     => [
 				'menu_position' => 5,
 				'hierarchical'  => false,
-			]
-		*/
-	]
-,
+			],
+		],*/
+	],
 	'add_taxonomies'     => [
 		'media-category' => [
 			'objects' => [ 'attachment' ],
 			'args'    => [
 				'show_admin_column'     => true,
 				'hierarchical'          => true,
-				'update_count_callback' => '_update_generic_term_count'
+				'update_count_callback' => '_update_generic_term_count',
 			],
 			'labels'  => [
 				'name'                  => 'Media Categories',
@@ -126,50 +122,47 @@ $settings = [
 				'popular_items'         => 'Popular Media Categories',
 				'add_or_remove_items'   => 'Add or Remove Media Category',
 				'choose_from_most_used' => 'Most Used Media Categories',
-				'not_found'             => 'No Media Categories Found'
-			]
-		]
+				'not_found'             => 'No Media Categories Found',
+			],
+		],
 	],
-	'remove_post_types'  => [/*
-		'edit.php'
-		*/
+	'remove_post_types'  => [
+		/*'edit.php',*/
 	],
 	'add_sidebars'       => [
 		/*'blog' => [
 			'name'         => __( 'Blog Sidebar', 'theme_text_domain' ),
 			'id'           => 'blog-sidebar',
 			'before_title' => '<h4 class="widget__title">',
-			'after_title'  => '</h4>'
+			'after_title'  => '</h4>',
 		],*/
 	],
-	'add_css'            => [/*
-		'name' => 'filename.css'
-		*/
+	'add_css'            => [
+		/*'name' => 'filename.css',*/
 	],
-	'add_js'             => [/*
-		'name' => 'filename.css'
-		*/
+	'add_js'             => [
+		/*'name' => 'filename.css',*/
 	],
-	'p2p_connections'    => [/*		[
+	'p2p_connections'    => [
+		/*[
 			'name' => '',
 			'from' => '',
 			'to' => '',
 			'reciprocal' => TRUE,
 			'sortable' => 'any',
 			'title' => [ 'from' => '', 'to' => '' ]
-		]*/
-	]
+		],*/
+	],
 ];
 
 /* Core Class Called (parent to all other classes) */
-$ClientCore = new ClientCore( $settings );
+$client_core = new ClientCore( $settings );
 
 $posts_settings = [
-	'post_meta' => [/*
-        'meta_field',
-        'meta_field_2'
-         */
-	]
+	'post_meta' => [
+		/*'meta_field',
+        'meta_field_2',*/
+	],
 ];
 
-$ClientPosts = new ClientPosts( $posts_settings );
+$client_posts = new ClientPosts( $posts_settings );

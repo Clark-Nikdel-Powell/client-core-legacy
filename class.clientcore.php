@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Core Plugin for Client Website Creation
  *
@@ -20,19 +21,19 @@ class ClientCore {
 	public $do = null;
 	public $timezone = '';
 	public $settings = [
-		'post_formats'       => [ ],
-		'custom_image_sizes' => [ ],
-		'options_pages'      => [ ],
-		'add_post_types'     => [ ],
-		'add_taxonomies'     => [ ],
-		'remove_post_types'  => [ ],
-		'add_css'            => [ ],
-		'add_js'             => [ ]
+		'post_formats'       => array(),
+		'custom_image_sizes' => array(),
+		'options_pages'      => array(),
+		'add_post_types'     => array(),
+		'add_taxonomies'     => array(),
+		'remove_post_types'  => array(),
+		'add_css'            => array(),
+		'add_js'             => array(),
 	];
 
 
 	/**
-	 * Initial constructor. Occurrs at instantiation.
+	 * Initial constructor. Occurs at instantiation.
 	 *
 	 * @param    array $settings User defined settings
 	 *
@@ -45,6 +46,7 @@ class ClientCore {
 		$this->set_post_formats();
 		$this->hook_wordpress();
 		$this->options();
+
 		if ( class_exists( 'ClientCore_Functions' ) ) {
 			$this->do = new ClientCore_Functions();
 		}
@@ -84,7 +86,9 @@ class ClientCore {
 	 * @since    1.0
 	 */
 	public function set_image_sizes() {
+
 		$sizes = $this->settings['custom_image_sizes'];
+
 		if ( is_array( $sizes ) && count( $sizes ) > 0 ) {
 			foreach ( $sizes as $name => $size ) {
 				if ( is_numeric( $name ) ) {
@@ -103,7 +107,9 @@ class ClientCore {
 	 * @since    1.0
 	 */
 	public function set_post_formats() {
+
 		$formats = $this->settings['post_formats'];
+
 		if ( is_array( $formats ) && count( $formats ) > 0 ) {
 			add_theme_support( 'post-formats', $formats );
 		}
@@ -138,7 +144,7 @@ class ClientCore {
 				'menu_slug'  => $options_page['menu_slug'],
 				'capability' => $options_page['capability'],
 				'icon_url'   => $options_page['icon_url'],
-				'redirect'   => $options_page['redirect']
+				'redirect'   => $options_page['redirect'],
 			] );
 		}
 	}
@@ -150,20 +156,20 @@ class ClientCore {
 	 * @param    string $plural The plural name of the post type
 	 * @param    string $icon Optional class name of the dashicon to use
 	 * @param    array $extargs Optional array of args to use when registering
-	 * @param    array $extlables Optional array of labels to use when registering
+	 * @param    array $extlabels Optional array of labels to use when registering
 	 *
 	 * @since    1.0
 	 */
-	public function register_post_type( $name, $plural = '', $icon = '', $extsupports = [ ], $extargs = [ ], $extlabels = [ ] ) {
+	public function register_post_type( $name, $plural = '', $icon = '', $extsupports = array(), $extargs = array(), $extlabels = array() ) {
 
-		if ( $icon === '' ) {
+		if ( '' === $icon ) {
 			$icon = 'dashicons-admin-post';
 		}
 
 		$proper_name        = ucwords( $name );
 		$plural_proper_name = ucwords( $plural );
 
-		if ( $plural_proper_name === '' ) {
+		if ( '' === $plural_proper_name ) {
 			$plural_proper_name = $proper_name;
 		}
 
@@ -180,7 +186,7 @@ class ClientCore {
 			'not_found_in_trash' => 'No ' . $plural_proper_name . ' found in Trash.',
 			'all_items'          => $plural_proper_name,
 			'menu_name'          => $plural_proper_name,
-			'name_admin_bar'     => $plural_proper_name
+			'name_admin_bar'     => $plural_proper_name,
 		];
 		if ( ! empty( $extlabels ) ) {
 			$labels = array_merge( $labels, $extlabels );
@@ -190,11 +196,13 @@ class ClientCore {
 			'title',
 			'editor',
 			'revisions',
-			'thumbnail'
+			'thumbnail',
 		];
+
 		if ( ! empty( $extsupports ) ) {
-			if ( isset( $extsupports['none'] ) && $extsupports['none'] === false ) {
-				$supports = [ ];
+
+			if ( isset( $extsupports['none'] ) && false === $extsupports['none'] ) {
+				$supports = array();
 			} else {
 				$supports = $extsupports;
 			}
@@ -210,8 +218,9 @@ class ClientCore {
 			'hierarchical'       => true,
 			'supports'           => $supports,
 			'menu_position'      => 10,
-			'show_in_menu'       => true
+			'show_in_menu'       => true,
 		];
+
 		if ( ! empty( $extargs ) ) {
 			$args = array_merge( $args, $extargs );
 		}
@@ -223,13 +232,13 @@ class ClientCore {
 	 * Register function for wordpress taxonomies. Requires singular name and can optionally accept for, args, and labels
 	 *
 	 * @param    string $name The name of the taxonomy (singular)
-	 * @param    string $objects Optional array of post_types to use this taxonomy for
+	 * @param    array $objects Optional array of post_types to use this taxonomy for
 	 * @param    array $extargs Optional array of args to use when registering
-	 * @param    array $extlables Optional array of labels to use when registering
+	 * @param    array $extlabels Optional array of labels to use when registering
 	 *
 	 * @since    1.0
 	 */
-	public function register_taxonomy( $name, $objects = [ ], $extargs = [ ], $extlabels = [ ] ) {
+	public function register_taxonomy( $name, $objects = array(), $extargs = array(), $extlabels = array() ) {
 
 		$proper_name = ucwords( $name );
 
@@ -247,7 +256,7 @@ class ClientCore {
 			'popular_items'         => 'Popular ' . $proper_name,
 			'add_or_remove_items'   => 'Add or Remove ' . $proper_name,
 			'choose_from_most_used' => 'Most Used ' . $proper_name,
-			'not_found'             => 'No ' . $proper_name . ' Found'
+			'not_found'             => 'No ' . $proper_name . ' Found',
 		];
 
 		if ( ! empty( $extlabels ) ) {
@@ -265,7 +274,7 @@ class ClientCore {
 			'update_count_callback' => null,
 			'rewrite'               => true,
 			'sort'                  => null,
-			'labels'                => $labels
+			'labels'                => $labels,
 		];
 
 		if ( ! empty( $extargs ) ) {
@@ -285,7 +294,7 @@ class ClientCore {
 			'before_widget' => '<div id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</div>',
 			'before_title'  => '<h3 class="widgettitle">',
-			'after_title'   => '</h3>'
+			'after_title'   => '</h3>',
 		];
 
 		$vars = wp_parse_args( $args, $defaults );
@@ -300,14 +309,17 @@ class ClientCore {
 	 * @since    1.0
 	 */
 	public function add_post_types() {
-		$types    = $this->settings['add_post_types'];
+
+		$types = $this->settings['add_post_types'];
+
 		$defaults = [
 			'plural'   => '',
 			'icon'     => '',
 			'supports' => '',
 			'args'     => '',
-			'labels'   => ''
+			'labels'   => '',
 		];
+
 		if ( is_array( $types ) && count( $types ) > 0 ) {
 			foreach ( $types as $type ) {
 				$type = array_merge( $defaults, $type );
@@ -324,6 +336,7 @@ class ClientCore {
 	 * @since    1.0
 	 */
 	public function add_taxonomies() {
+
 		$taxonomies = $this->settings['add_taxonomies'];
 
 		if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) {
@@ -341,13 +354,13 @@ class ClientCore {
 				}
 
 				$this->register_taxonomy( $taxonomy_slug, $taxonomy_args['objects'], $custom_args, $custom_labels );
-
 			}
 		}
 	}
 
 
 	public function add_sidebars() {
+
 		$sidebars = $this->settings['add_sidebars'];
 
 		if ( is_array( $sidebars ) && count( $sidebars ) > 0 ) {
@@ -360,12 +373,14 @@ class ClientCore {
 
 
 	/**
-	 * Action callback to loop through deregistering pages. Uses remove_post_types key in $settings array.
+	 * Action callback to loop through de-registering pages. Uses remove_post_types key in $settings array.
 	 *
 	 * @since    1.0
 	 */
 	public function remove_post_types() {
+
 		$pages = $this->settings['remove_post_types'];
+
 		if ( is_array( $pages ) && count( $pages ) > 0 ) {
 			foreach ( $pages as $page ) {
 				remove_menu_page( $page );
@@ -379,7 +394,9 @@ class ClientCore {
 	 * @since    1.0
 	 */
 	public function css() {
+
 		$stylesheets = $this->settings['add_css'];
+
 		if ( is_array( $stylesheets ) && count( $stylesheets ) > 0 ) {
 			foreach ( $stylesheets as $name => $stylesheet ) {
 				wp_enqueue_style( $name, SITE_URL . '/css/' . $stylesheet );
@@ -393,7 +410,9 @@ class ClientCore {
 	 * @since    1.0
 	 */
 	public function js() {
+
 		$scripts = $this->settings['add_js'];
+
 		if ( is_array( $scripts ) && count( $scripts ) > 0 ) {
 			foreach ( $scripts as $name => $script ) {
 				wp_enqueue_script( $name, SITE_URL . '/js/' . $script, [ 'jquery' ], null, true );
