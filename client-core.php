@@ -165,4 +165,4 @@ $posts_settings = [
 	],
 ];
 
-$client_posts = new ClientPosts( $posts_settings );
+//$client_posts = new ClientPosts( $posts_settings );
