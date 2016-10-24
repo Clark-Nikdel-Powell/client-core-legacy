@@ -24,8 +24,8 @@ class ClientCore {
 		'post_formats'       => array(),
 		'custom_image_sizes' => array(),
 		'options_pages'      => array(),
-		'add_post_types'     => array(),
 		'add_taxonomies'     => array(),
+		'add_post_types'     => array(),
 		'remove_post_types'  => array(),
 		'add_css'            => array(),
 		'add_js'             => array(),
@@ -73,8 +73,8 @@ class ClientCore {
 	 */
 	public function hook_wordpress() {
 		add_action( 'admin_menu', [ $this, 'remove_post_types' ] );
-		add_action( 'init', [ $this, 'add_post_types' ] );
 		add_action( 'init', [ $this, 'add_taxonomies' ] );
+		add_action( 'init', [ $this, 'add_post_types' ] );
 		add_action( 'init', [ $this, 'add_sidebars' ] );
 		add_action( 'admin_init', [ $this, 'css' ] );
 		add_action( 'admin_init', [ $this, 'js' ] );
@@ -147,6 +147,62 @@ class ClientCore {
 				'redirect'   => $options_page['redirect'],
 			] );
 		}
+	}
+
+	/**
+	 * Register function for wordpress taxonomies. Requires singular name and can optionally accept for, args, and labels
+	 *
+	 * @param    string $name The name of the taxonomy (singular)
+	 * @param    array $objects Optional array of post_types to use this taxonomy for
+	 * @param    array $extargs Optional array of args to use when registering
+	 * @param    array $extlabels Optional array of labels to use when registering
+	 *
+	 * @since    1.0
+	 */
+	public function register_taxonomy( $name, $objects = array(), $extargs = array(), $extlabels = array() ) {
+
+		$proper_name = ucwords( $name );
+
+		$labels = [
+			'name'                  => $proper_name,
+			'singular_name'         => $proper_name,
+			'menu_name'             => $proper_name,
+			'all_items'             => 'All ' . $proper_name,
+			'edit_item'             => 'Edit ' . $proper_name,
+			'view_item'             => 'View ' . $proper_name,
+			'update_item'           => 'Update ' . $proper_name,
+			'add_new_item'          => 'Add New ' . $proper_name,
+			'new_item_name'         => 'New ' . $proper_name . ' Name',
+			'search_items'          => 'Search ' . $proper_name,
+			'popular_items'         => 'Popular ' . $proper_name,
+			'add_or_remove_items'   => 'Add or Remove ' . $proper_name,
+			'choose_from_most_used' => 'Most Used ' . $proper_name,
+			'not_found'             => 'No ' . $proper_name . ' Found',
+		];
+
+		if ( ! empty( $extlabels ) ) {
+			$labels = array_merge( $labels, $extlabels );
+		}
+
+		$args = [
+			'public'                => true,
+			'show_ui'               => true,
+			'show_in_nav_menus'     => true,
+			'show_tagcloud'         => true,
+			'meta_box_cb'           => null,
+			'show_admin_column'     => false,
+			'hierarchical'          => false,
+			'update_count_callback' => null,
+			'rewrite'               => true,
+			'sort'                  => null,
+			'labels'                => $labels,
+		];
+
+		if ( ! empty( $extargs ) ) {
+			$args = array_merge( $args, $extargs );
+		}
+
+		register_taxonomy( $name, $objects, $args );
 	}
 
 	/**
@@ -228,62 +284,6 @@ class ClientCore {
 		register_post_type( $name, $args );
 	}
 
-	/**
-	 * Register function for wordpress taxonomies. Requires singular name and can optionally accept for, args, and labels
-	 *
-	 * @param    string $name The name of the taxonomy (singular)
-	 * @param    array $objects Optional array of post_types to use this taxonomy for
-	 * @param    array $extargs Optional array of args to use when registering
-	 * @param    array $extlabels Optional array of labels to use when registering
-	 *
-	 * @since    1.0
-	 */
-	public function register_taxonomy( $name, $objects = array(), $extargs = array(), $extlabels = array() ) {
-
-		$proper_name = ucwords( $name );
-
-		$labels = [
-			'name'                  => $proper_name,
-			'singular_name'         => $proper_name,
-			'menu_name'             => $proper_name,
-			'all_items'             => 'All ' . $proper_name,
-			'edit_item'             => 'Edit ' . $proper_name,
-			'view_item'             => 'View ' . $proper_name,
-			'update_item'           => 'Update ' . $proper_name,
-			'add_new_item'          => 'Add New ' . $proper_name,
-			'new_item_name'         => 'New ' . $proper_name . ' Name',
-			'search_items'          => 'Search ' . $proper_name,
-			'popular_items'         => 'Popular ' . $proper_name,
-			'add_or_remove_items'   => 'Add or Remove ' . $proper_name,
-			'choose_from_most_used' => 'Most Used ' . $proper_name,
-			'not_found'             => 'No ' . $proper_name . ' Found',
-		];
-
-		if ( ! empty( $extlabels ) ) {
-			$labels = array_merge( $labels, $extlabels );
-		}
-
-		$args = [
-			'public'                => true,
-			'show_ui'               => true,
-			'show_in_nav_menus'     => true,
-			'show_tagcloud'         => true,
-			'meta_box_cb'           => null,
-			'show_admin_column'     => false,
-			'hierarchical'          => false,
-			'update_count_callback' => null,
-			'rewrite'               => true,
-			'sort'                  => null,
-			'labels'                => $labels,
-		];
-
-		if ( ! empty( $extargs ) ) {
-			$args = array_merge( $args, $extargs );
-		}
-
-		register_taxonomy( $name, $objects, $args );
-	}
-
 	public function register_sidebar( $args ) {
 
 		$defaults = [
@@ -301,33 +301,6 @@ class ClientCore {
 
 		register_sidebar( $vars );
 
-	}
-
-	/**
-	 * Action hook to loop through registering of post types. Uses add_post_types key in $settings array.
-	 *
-	 * @since    1.0
-	 */
-	public function add_post_types() {
-
-		$types = $this->settings['add_post_types'];
-
-		$defaults = [
-			'plural'   => '',
-			'icon'     => '',
-			'supports' => '',
-			'args'     => '',
-			'labels'   => '',
-		];
-
-		if ( is_array( $types ) && count( $types ) > 0 ) {
-			foreach ( $types as $type ) {
-				$type = array_merge( $defaults, $type );
-				if ( isset( $type['name'] ) ) {
-					$this->register_post_type( $type['name'], $type['plural'], $type['icon'], $type['supports'], $type['args'], $type['labels'] );
-				}
-			}
-		}
 	}
 
 	/**
@@ -354,6 +327,33 @@ class ClientCore {
 				}
 
 				$this->register_taxonomy( $taxonomy_slug, $taxonomy_args['objects'], $custom_args, $custom_labels );
+			}
+		}
+	}
+
+	/**
+	 * Action hook to loop through registering of post types. Uses add_post_types key in $settings array.
+	 *
+	 * @since    1.0
+	 */
+	public function add_post_types() {
+
+		$types = $this->settings['add_post_types'];
+
+		$defaults = [
+			'plural'   => '',
+			'icon'     => '',
+			'supports' => '',
+			'args'     => '',
+			'labels'   => '',
+		];
+
+		if ( is_array( $types ) && count( $types ) > 0 ) {
+			foreach ( $types as $type ) {
+				$type = array_merge( $defaults, $type );
+				if ( isset( $type['name'] ) ) {
+					$this->register_post_type( $type['name'], $type['plural'], $type['icon'], $type['supports'], $type['args'], $type['labels'] );
+				}
 			}
 		}
 	}
