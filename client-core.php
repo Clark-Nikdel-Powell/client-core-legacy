@@ -1,11 +1,11 @@
 <?php
 /*
 	Plugin Name: Client Core
-	Plugin URI: http://clarknikdelpowell.com
+	Plugin URI: https://cnpagency.com
 	Version: 2.1.0
 	Description: Core functionality for a client site
-	Author: Glenn Welser, Sam Mello & Josh Nederveld
-	Author URI: http://clarknikdelpowell.com/agency/people/
+	Author: Glenn Welser & Josh Nederveld
+	Author URI: https://cnpagency.com/people/
 
 	Copyright 2014+ Clark/Nikdel/Powell
 
