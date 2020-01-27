@@ -90,16 +90,16 @@ class Post_Type {
 	 *
 	 * @var array
 	 */
-	public $labels;
+	public $labels = array();
 
 	/**
 	 * Whether to use the internal default meta capability handling.
 	 *
-	 * Default false.
+	 * Default null.
 	 *
 	 * @var bool
 	 */
-	public $map_meta_cap = false;
+	public $map_meta_cap = null;
 
 	/**
 	 * The url to the icon to be used for this menu.
@@ -276,14 +276,8 @@ class Post_Type {
 
 	/**
 	 * Post_Type constructor
-	 *
-	 * @param string $post_type Post type key.
-	 * @param array  $labels Array of post type labels.
 	 */
-	public function __construct( $post_type, $labels = array() ) {
-
-		$this->post_type = $post_type;
-		$this->labels    = $this->set_labels( $labels );
+	public function __construct() {
 
 		\add_action( 'init', array( $this, 'register' ) );
 
@@ -294,16 +288,14 @@ class Post_Type {
 	 */
 	public function register() {
 
-		\register_post_type( $this->post_type, $this->set_args() );
+		\register_post_type( $this->name, $this->set_args() );
 
 	}
 
 	/**
 	 * Set post type labels
-	 *
-	 * @param array $labels Post type label settings.
 	 */
-	private function set_labels( $labels ) {
+	private function set_labels() {
 
 		$default_labels = array(
 			'name'                  => $this->plural,
@@ -335,7 +327,7 @@ class Post_Type {
 			'filter_items_list'     => sprintf( 'Filter %s list', strtolower( $this->single ) ),
 		);
 
-		return array_merge( $default_labels, $labels );
+		return array_merge( $default_labels, $this->labels );
 	}
 
 	/**
@@ -344,7 +336,8 @@ class Post_Type {
 	private function set_args() {
 
 		return array(
-			'labels'                => $this->labels,
+			'label'                 => $this->plural,
+			'labels'                => $this->set_labels(),
 			'description'           => $this->description,
 			'public'                => $this->public,
 			'hierarchical'          => $this->hierarchical,
