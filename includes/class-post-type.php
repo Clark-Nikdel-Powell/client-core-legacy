@@ -15,6 +15,13 @@ namespace CNP;
 class Post_Type {
 
 	/**
+	 * Array of registration arguments. Gets merged with registration settings.
+	 *
+	 * @var array
+	 */
+	public $arguments = array();
+
+	/**
 	 * Whether to allow this post type to be exported.
 	 *
 	 * Default true.
@@ -297,7 +304,7 @@ class Post_Type {
 	 */
 	private function set_labels() {
 
-		$default_labels = array(
+		$labels = array(
 			'name'                  => $this->plural,
 			'singular_name'         => $this->single,
 			'menu_name'             => $this->plural,
@@ -327,7 +334,7 @@ class Post_Type {
 			'filter_items_list'     => sprintf( 'Filter %s list', strtolower( $this->single ) ),
 		);
 
-		return array_merge( $default_labels, $this->labels );
+		return array_merge( $labels, $this->labels );
 	}
 
 	/**
@@ -335,7 +342,7 @@ class Post_Type {
 	 */
 	private function set_args() {
 
-		return array(
+		$args = array(
 			'label'                 => $this->plural,
 			'labels'                => $this->set_labels(),
 			'description'           => $this->description,
@@ -364,5 +371,7 @@ class Post_Type {
 			'rest_base'             => $this->rest_base,
 			'rest_controller_class' => $this->rest_controller_class,
 		);
+
+		return array_merge( $args, $this->arguments );
 	}
 }
