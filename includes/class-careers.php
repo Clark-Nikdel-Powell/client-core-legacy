@@ -17,7 +17,7 @@ class Careers extends Post_Type {
 	 */
 	public function __construct() {
 
-		$this->name                = 'careers';
+		$this->name                = 'career';
 		$this->single              = 'Career';
 		$this->plural              = 'Careers';
 		$this->description         = 'Careers at Hopping Green & Sams';
@@ -26,7 +26,7 @@ class Careers extends Post_Type {
 		$this->show_ui             = true;
 		$this->show_in_menu        = true;
 		$this->menu_position       = 6;
-		$this->menu_icon           = 'dashicon-clipboard';
+		$this->menu_icon           = 'dashicons-clipboard';
 		$this->show_in_admin_bar   = true;
 		$this->show_in_nav_menus   = false;
 		$this->show_in_rest        = false;
@@ -43,7 +43,7 @@ class Careers extends Post_Type {
 			'archives'              => __( 'Career Archives', 'cnp-core' ),
 			'attributes'            => __( 'Career Attributes', 'cnp-core' ),
 			'parent_item_colon'     => __( 'Parent Career:', 'cnp-core' ),
-			'all_items'             => __( 'WOW! Careers', 'cnp-core' ),
+			'all_items'             => __( 'All Careers', 'cnp-core' ),
 			'add_new_item'          => __( 'Add New Career', 'cnp-core' ),
 			'add_new'               => __( 'Add New', 'cnp-core' ),
 			'new_item'              => __( 'New Career', 'cnp-core' ),
