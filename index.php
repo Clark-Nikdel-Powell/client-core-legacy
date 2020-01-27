@@ -20,9 +20,14 @@
  */
 
 use CNP\Careers;
+use CNP\Practice_Area;
 
 define( 'CLIENT_CORE_VERSION', '2.0.0' );
 
 require_once 'includes/class-post-type.php';
+
 require_once 'includes/class-careers.php';
 $careers = new Careers();
+
+require_once 'includes/class-practice-area.php';
+$practice_area = new Practice_Area();
