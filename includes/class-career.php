@@ -1,6 +1,6 @@
 <?php
 /**
- * Careers post type
+ * Career post type
  *
  * @package CNP
  */
@@ -8,16 +8,16 @@
 namespace CNP;
 
 /**
- * Careers Class
+ * Career Class
  */
-class Careers extends Post_Type {
+class Career extends Post_Type {
 
 	/**
-	 * Careers constructor
+	 * Career constructor
 	 */
 	public function __construct() {
 
-		$this->name                = 'career';
+		$this->post_type           = 'career';
 		$this->single              = 'Career';
 		$this->plural              = 'Careers';
 		$this->description         = 'Careers at Hopping Green & Sams';

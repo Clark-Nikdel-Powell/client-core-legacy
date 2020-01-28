@@ -129,11 +129,11 @@ class Post_Type {
 	public $menu_position = null;
 
 	/**
-	 * Post type key.
+	 * Post type key. Typically singular.
 	 *
 	 * @var string
 	 */
-	public $name;
+	public $post_type;
 
 	/**
 	 * Plural form of the post type name. Used for labels.
@@ -295,7 +295,7 @@ class Post_Type {
 	 */
 	public function register() {
 
-		\register_post_type( $this->name, $this->set_args() );
+		\register_post_type( $this->post_type, $this->set_args() );
 
 	}
 

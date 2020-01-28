@@ -17,7 +17,7 @@ class Practice_Area extends Post_Type {
 	 */
 	public function __construct() {
 
-		$this->name                = 'practice-area';
+		$this->post_type           = 'practice-area';
 		$this->single              = _x( 'Practice Area', 'Post Type Singular Name', 'cnp-core' );
 		$this->plural              = _x( 'Practice Areas', 'Post Type General Name', 'cnp-core' );
 		$this->description         = 'Practice Areas at Hopping Green & Sams';
