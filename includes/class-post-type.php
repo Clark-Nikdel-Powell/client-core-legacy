@@ -12,7 +12,7 @@ namespace CNP;
 /**
  * Post_Type Class
  */
-class Post_Type {
+abstract class Post_Type {
 
 	/**
 	 * Array of registration arguments. Gets merged with registration settings.
