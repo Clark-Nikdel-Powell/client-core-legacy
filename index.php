@@ -21,13 +21,32 @@
 
 use CNP\Career;
 use CNP\Practice_Area;
+use CNP\Scripts;
 
 define( 'CLIENT_CORE_VERSION', '2.0.0' );
 
+/**
+ * Base classes.
+ *
+ * Comment out those libraries that are not needed.
+ */
 require_once 'includes/class-post-type.php';
+require_once 'includes/class-shortcode.php';
+require_once 'includes/class-taxonomy.php';
 
+
+// Fixes.
+require_once 'includes/class-scripts.php';
+$cnp_scripts = new Scripts();
+
+
+// Post types.
 require_once 'includes/class-career.php';
-$career = new Career();
+$cnp_career = new Career();
 
 require_once 'includes/class-practice-area.php';
-$practice_area = new Practice_Area();
+$cnp_practice_area = new Practice_Area();
+
+// Taxonomies.
+
+// Shortcodes.
